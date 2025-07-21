@@ -20,7 +20,7 @@ import yukiMini from "../assets/icon/Character/Yuki/mini.png";
 import leonMini from "../assets/icon/Character/Leon/Mini.png";
 import ayaMini from "../assets/icon/Character/Aya/Mini.png";
 import silviaMini from "../assets/icon/Character/Silvia/Mini.png";
-import isabelMini from "../assets/icon/Character/Isol/Mini.png";
+import isolMini from "../assets/icon/Character/Isol/Mini.png";
 import lenoxMini from "../assets/icon/Character/Lenox/mini.png";
 
 // 캐릭터 배경 이미지 import
@@ -36,8 +36,8 @@ import yukiHalf from "../assets/icon/Character/Yuki/Half.png";
 import leonHalf from "../assets/icon/Character/Leon/Half.png";
 import ayaHalf from "../assets/icon/Character/Aya/Mini.png";
 import silviaHalf from "../assets/icon/Character/Silvia/Half.png";
-import isabelHalf from "../assets/icon/Character/Isol/Half.png";
-import lenoxHalf from "../assets/icon/Character/Lenox/020. Lenox - 레녹스.png";
+import isolHalf from "../assets/icon/Character/Isol/Half.png";
+import lenoxHalf from "../assets/icon/Character/Lenox/mini.png";
 
 // 티어 이미지 import
 import ironTier from "../assets/icon/Rank Tier/01. Iron.png";
@@ -339,9 +339,9 @@ const characterStats = {
       { subject: "클러치", user: 62, avg: 45 },
     ],
   },
-  이솔: {
+  아이솔: {
     nickname: "ERMaster",
-    mostCharacter: "이솔",
+    mostCharacter: "아이솔",
     kda: 5.0,
     avgDamage: 2350,
     avgRank: 2.4,
@@ -454,9 +454,9 @@ const mostCharacters = [
     games: 25,
   },
   {
-    name: "이솔",
-    image: isabelMini,
-    background: isabelHalf,
+    name: "아이솔",
+    image: isolMini,
+    background: isolHalf,
     winRate: 78,
     games: 17,
   },
@@ -548,7 +548,36 @@ export default function Home() {
     const newStats =
       characterStats[characterName as keyof typeof characterStats];
     setUserStats(newStats);
-    setStatsData(getStatsData());
+
+    // 새로운 캐릭터의 stats로 그래프 데이터 업데이트
+    const newStatsData = [
+      {
+        subject: "딜량",
+        user: newStats.stats[0].user,
+        avg: Math.round((currentTierAvg.avgDamage / 3000) * 100),
+      },
+      {
+        subject: "KDA",
+        user: newStats.stats[1].user,
+        avg: Math.round((currentTierAvg.avgKDA / 6) * 100),
+      },
+      {
+        subject: "순위",
+        user: newStats.stats[2].user,
+        avg: Math.round(((6 - currentTierAvg.avgRank) / 5) * 100),
+      },
+      {
+        subject: "킬",
+        user: newStats.stats[3].user,
+        avg: Math.round((currentTierAvg.avgKill / 10) * 100),
+      },
+      {
+        subject: "클러치",
+        user: newStats.stats[4].user,
+        avg: Math.round((currentTierAvg.avgClutchRate / 0.4) * 100),
+      },
+    ];
+    setStatsData(newStatsData);
   };
 
   // 티어 선택 시 평균값 변경
