@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 
 interface Character {
   name: string;
@@ -19,6 +19,15 @@ const MostCharacters: React.FC<MostCharactersProps> = ({
   selectedCharacter,
   onCharacterSelect,
 }) => {
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+  const handleWheel = (e: React.WheelEvent) => {
+    e.preventDefault();
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollLeft += e.deltaY * 2; // 스크롤 속도 2배
+    }
+  };
+
   return (
     <div style={{ height: "100%", display: "flex", flexDirection: "column" }}>
       <h3
@@ -33,6 +42,7 @@ const MostCharacters: React.FC<MostCharactersProps> = ({
         캐릭터 선택
       </h3>
       <div
+        ref={scrollContainerRef}
         style={{
           display: "flex",
           gap: 12,
@@ -42,8 +52,10 @@ const MostCharacters: React.FC<MostCharactersProps> = ({
           msOverflowStyle: "none", // IE/Edge
           flex: 1,
           alignItems: "flex-start",
+          cursor: "grab",
         }}
         className="character-scroll"
+        onWheel={handleWheel}
       >
         {characters.map((char) => (
           <div
@@ -63,9 +75,9 @@ const MostCharacters: React.FC<MostCharactersProps> = ({
                   ? "0 0 12px 0 #ff880033"
                   : "none",
               transition: "border 0.2s, box-shadow 0.2s",
-              minWidth: 80,
-              width: 80,
-              height: 100,
+              minWidth: 85,
+              width: 85,
+              height: 110,
               textAlign: "center",
               display: "flex",
               flexDirection: "column",
@@ -78,20 +90,20 @@ const MostCharacters: React.FC<MostCharactersProps> = ({
               src={typeof char.image === "string" ? char.image : char.image.src}
               alt={char.name}
               style={{
-                width: 40,
-                height: 40,
+                width: 45,
+                height: 45,
                 objectFit: "cover",
                 borderRadius: 8,
-                marginBottom: 4,
+                marginBottom: 6,
               }}
             />
             <div
               style={{
                 color: "#fff",
                 fontWeight: 600,
-                fontSize: 12,
+                fontSize: 13,
                 lineHeight: 1.1,
-                marginBottom: 2,
+                marginBottom: 3,
               }}
             >
               {char.name}
@@ -99,7 +111,7 @@ const MostCharacters: React.FC<MostCharactersProps> = ({
             <div
               style={{
                 color: "#bfc9d1",
-                fontSize: 10,
+                fontSize: 11,
                 lineHeight: 1.1,
               }}
             >

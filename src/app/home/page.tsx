@@ -4,7 +4,7 @@ import CustomRadarChart from "@/components/RadarChart";
 import UserStats from "@/components/UserStats";
 import MostCharacters from "@/components/MostCharacters";
 import ProfileCard from "@/components/ProfileCard";
-import "../../App.css";
+import Image, { type StaticImageData } from "next/image";
 
 // 캐릭터 이미지 import (선택창용)
 import aidenMini from "../../assets/icon/Character/Aiden/Default_Mini.png";
@@ -577,19 +577,15 @@ export default function Home() {
                     minWidth: 120,
                   }}
                 >
-                  <img
+                  <Image
                     src={
-                      (
-                        tierAverages[selectedTier as keyof typeof tierAverages]
-                          .image as { src: string }
-                      ).src ||
-                      (tierAverages[selectedTier as keyof typeof tierAverages]
-                        .image as string)
+                      tierAverages[selectedTier as keyof typeof tierAverages]
+                        .image as StaticImageData
                     }
                     alt={selectedTier}
+                    width={24}
+                    height={24}
                     style={{
-                      width: 24,
-                      height: 24,
                       objectFit: "contain",
                     }}
                   />
@@ -650,23 +646,15 @@ export default function Home() {
                           }
                         }}
                       >
-                        <img
+                        <Image
                           src={
-                            typeof tierAverages[
-                              tier as keyof typeof tierAverages
-                            ].image === "string"
-                              ? tierAverages[tier as keyof typeof tierAverages]
-                                  .image
-                              : (
-                                  tierAverages[
-                                    tier as keyof typeof tierAverages
-                                  ].image as { src: string }
-                                ).src
+                            tierAverages[tier as keyof typeof tierAverages]
+                              .image as StaticImageData
                           }
                           alt={tier}
+                          width={20}
+                          height={20}
                           style={{
-                            width: 20,
-                            height: 20,
                             objectFit: "contain",
                           }}
                         />
