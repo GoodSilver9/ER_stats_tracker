@@ -3,6 +3,8 @@ import { NextRequest, NextResponse } from "next/server";
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
+    const userNum = searchParams.get("userNum");
+    const seasonId = searchParams.get("seasonId");
     const playerName = searchParams.get("playerName");
     const apiKey = process.env.ER_API_KEY;
 
@@ -15,9 +17,7 @@ export async function GET(request: NextRequest) {
 
     // ER API 엔드포인트 (실제 API 문서에 따라 수정 필요)
     const response = await fetch(
-      `https://open-api.bser.io/v1/user/nickname?query=${encodeURIComponent(
-        playerName
-      )}`,
+      `https://open-api.bser.io/v1/user/stats/${userNum}/${seasonId}`,
       {
         headers: {
           "x-api-key": apiKey,
