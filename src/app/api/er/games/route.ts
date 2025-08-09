@@ -48,29 +48,15 @@ export async function GET(request: NextRequest) {
     } catch (apiError) {
       console.error("실제 Games API 호출 실패:", apiError);
 
-      // API 호출 실패 시 더미 데이터 반환 (개발용)
-      const dummyGamesResult = {
-        code: 200,
-        message: "Success",
-        games: [
-          {
-            gameId: "123456789",
-            userNum: userNum,
-            character: "Adela",
-            result: "WIN",
-            killCount: 3,
-            assistCount: 2,
-            rank: 1,
-            gameTime: "2024-08-05T10:30:00Z",
-          },
-        ],
-        next: null,
-        message: "실제 API 엔드포인트 확인 후 수정 필요",
-        apiError:
-          apiError instanceof Error ? apiError.message : String(apiError),
-      };
-
-      return NextResponse.json(dummyGamesResult);
+      return NextResponse.json(
+        {
+          error: "실제 ER API 호출 실패",
+          details:
+            apiError instanceof Error ? apiError.message : String(apiError),
+          endpoint: `https://open-api.bser.io/v1/user/games/${userNum}`,
+        },
+        { status: 500 }
+      );
     }
   } catch (error) {
     console.error("게임 히스토리 조회 오류:", error);
