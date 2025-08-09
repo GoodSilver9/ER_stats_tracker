@@ -46,21 +46,15 @@ export async function GET(request: NextRequest) {
     } catch (apiError) {
       console.error("실제 Player API 호출 실패:", apiError);
 
-      // API 호출 실패 시 더미 데이터 반환 (개발용)
-      const dummyData = {
-        playerName: playerName,
-        level: 50,
-        rank: "Diamond",
-        totalMatches: 150,
-        winRate: 65.2,
-        mostPlayedCharacter: "Adela",
-        lastUpdated: new Date().toISOString(),
-        message: "실제 API 엔드포인트 확인 후 수정 필요",
-        apiError:
-          apiError instanceof Error ? apiError.message : String(apiError),
-      };
-
-      return NextResponse.json(dummyData);
+      return NextResponse.json(
+        {
+          error: "실제 ER API 호출 실패",
+          details:
+            apiError instanceof Error ? apiError.message : String(apiError),
+          endpoint: "https://open-api.bser.io/v1/user/nickname",
+        },
+        { status: 500 }
+      );
     }
   } catch (error) {
     console.error("플레이어 정보 조회 오류:", error);

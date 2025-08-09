@@ -45,27 +45,15 @@ export async function GET(request: NextRequest) {
     } catch (apiError) {
       console.error("실제 Rank API 호출 실패:", apiError);
 
-      // API 호출 실패 시 더미 데이터 반환 (개발용)
-      const dummyRankResult = {
-        code: 200,
-        message: "Success",
-        rank: {
-          userNum: userNum,
-          seasonId: seasonId,
-          matchingTeamMode: matchingTeamMode,
-          rank: 1500,
-          tier: "Diamond",
-          division: 3,
-          points: 2450,
-          totalMatches: 150,
-          winRate: 65.2,
+      return NextResponse.json(
+        {
+          error: "실제 ER API 호출 실패",
+          details:
+            apiError instanceof Error ? apiError.message : String(apiError),
+          endpoint: `https://open-api.bser.io/v1/rank/${userNum}/${seasonId}/${matchingTeamMode}`,
         },
-        message: "실제 API 엔드포인트 확인 후 수정 필요",
-        apiError:
-          apiError instanceof Error ? apiError.message : String(apiError),
-      };
-
-      return NextResponse.json(dummyRankResult);
+        { status: 500 }
+      );
     }
   } catch (error) {
     console.error("랭킹 정보 조회 오류:", error);
